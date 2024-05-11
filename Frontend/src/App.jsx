@@ -1,12 +1,14 @@
-
-
+import Home from "./Components/Home"
 function App() {
-  
-
   return (
     <>
-      Notes App
+      <div className="bg-slate-200 dark:bg-slate-800">
+
+        <Home/>
+        
+      </div>
     </>
+    
   )
 }
 
