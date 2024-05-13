@@ -1,22 +1,48 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
-
+import { Link,Navigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function RegisterPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData,setFormData]=useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const[isRegistered,setIsRegistered]=useState(false);
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+      body: JSON.stringify(formData),
+
+    });
+    const data=await res.json();
+    if(res.status==201){
+      setIsRegistered(true);
+      toast.success(data.message, {});
+      return;
+    }
+    
+    toast.error(data.message, {});
+    
+    
+  };
+
+  if(isRegistered){
+    return <Navigate to="/" replace={true}/>
+  }
+      
   return (
     <>
     <style>
@@ -29,7 +55,7 @@ function RegisterPage() {
     <Navbar title={"Notes App"}/>
     <div className="min-h-screen items-center flex flex-col mx-2 mt-24">
     
-      <div className="bg-slate-300 border-2 border-black dark:border-white dark:bg-slate-400 p-8 rounded-xl backdrop-blur mx-3 space-y-8 max-w-md w-full pb-14 ">
+      <div className="bg-slate-300 border-2 border-black dark:border-white dark:bg-slate-400 p-8 rounded-xl backdrop-blur mx-3 space-y-8 max-w-md w-full pb-14">
         <h2 className="text-2xl mb-4 font-semibold text-[#28231d] text-center dark:text-black">
           Register
         </h2>
@@ -48,8 +74,7 @@ function RegisterPage() {
               autoComplete="name"
               placeholder="John"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleChange}
               className="mt-1 p-2 block w-full rounded-md focus:outline-none placeholder:text-[#28231d]/50 bg-white/20"
             />
           </div>
@@ -67,8 +92,7 @@ function RegisterPage() {
               autoComplete="email"
               placeholder="john@gmail.com"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
               className="mt-1 p-2 block w-full rounded-md focus:outline-none placeholder:text-[#28231d]/50 bg-white/20"
             />
           </div>
@@ -86,8 +110,7 @@ function RegisterPage() {
               autoComplete="new-password"
               placeholder="************"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
               className="mt-1 p-2 block w-full rounded-md focus:outline-none placeholder:text-[#28231d]/50 bg-white/20"
             />
             <button
