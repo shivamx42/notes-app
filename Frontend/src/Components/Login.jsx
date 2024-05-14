@@ -1,18 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link,Navigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from "react-redux";
+import { signInSuccess } from "../redux/user/userSlice";
+import { Oval } from 'react-loader-spinner'
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData,setFormData]=useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoggedIn,setIsLoggedIn]=useState(false);
+  const [loading,setLoading]=useState(false);
+  const dispatch=useDispatch();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+  const currentUser = useSelector(state => state.user.currentUser); 
+  useEffect(() => {
+    if (currentUser) {
+      setIsLoggedIn(true);
+    }
+  }, [currentUser]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
   };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+      body: JSON.stringify(formData),
+
+    });
+    const data=await res.json();
+    if(res.status==200){
+      setIsLoggedIn(true);
+      toast.success(data.message, {});
+      dispatch(signInSuccess(data.userData));
+      setLoading(false);
+      return;
+    }
+    
+    toast.error(data.message, {});
+    setLoading(false);
+    
+  };
+
+  if(isLoggedIn){
+    return <Navigate to="/" replace={true}/>
+  }
 
   return (
     <>
@@ -44,8 +88,7 @@ function Login() {
                 autoComplete="email"
                 placeholder="john@gmail.com"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleChange}
                 className="mt-1 p-2 block w-full rounded-md focus:outline-none placeholder:text-[#28231d]/50 bg-white/20"
               />
             </div>
@@ -63,8 +106,7 @@ function Login() {
                 autoComplete="current-password"
                 placeholder="************"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
                 className="mt-1 p-2 block w-full rounded-md focus:outline-none placeholder:text-[#28231d]/50 bg-white/20"
               />
               <button
@@ -76,12 +118,26 @@ function Login() {
               </button>
             </div>
             <div>
-              <button
-                type="submit"
-                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-slate-600/70 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700"
-              >
-                Submit
-              </button>
+            <button
+              disabled={loading}
+              type="submit"
+              className="relative w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-slate-600/70 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700 flex items-center justify-center"
+            >
+              {loading ? (<Oval
+                visible={true}
+                height="40"
+                width="40"
+                color="black"
+                ariaLabel="oval-loading"
+                secondaryColor="white"
+                strokeWidth="5"
+                
+                />)
+                : (
+                "Submit"
+              )}
+            </button>
+
             </div>
           </form>
           <div className="mt-4 text-sm">

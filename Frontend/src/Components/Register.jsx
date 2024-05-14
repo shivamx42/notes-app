@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link,Navigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from "react-redux";
+import { signInSuccess } from "../redux/user/userSlice";
+import { Oval } from 'react-loader-spinner'
 
 function RegisterPage() {
   const [formData,setFormData]=useState({});
   const [showPassword, setShowPassword] = useState(false);
   const[isRegistered,setIsRegistered]=useState(false);
+  const[loading,setLoading]=useState(false);
+
+  const dispatch=useDispatch();
+
+  const currentUser = useSelector(state => state.user.currentUser); 
+  useEffect(() => {
+    if (currentUser) {
+      setIsRegistered(true);
+    }
+  }, [currentUser]);
 
   const handleChange = (e) => {
     setFormData({
@@ -19,6 +32,7 @@ function RegisterPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: {
@@ -31,11 +45,13 @@ function RegisterPage() {
     if(res.status==201){
       setIsRegistered(true);
       toast.success(data.message, {});
+      dispatch(signInSuccess(data.userData));
+      setLoading(false);
       return;
     }
     
     toast.error(data.message, {});
-    
+    setLoading(false);
     
   };
 
@@ -122,11 +138,24 @@ function RegisterPage() {
             </button>
           </div>
           <div>
-            <button
+          <button
+              disabled={loading}
               type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-slate-600/70 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700"
+              className="relative w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-slate-600/70 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700 flex items-center justify-center"
             >
-              Submit
+              {loading ? (<Oval
+                visible={true}
+                height="40"
+                width="40"
+                color="black"
+                ariaLabel="oval-loading"
+                secondaryColor="white"
+                strokeWidth="5"
+                
+                />)
+                : (
+                "Submit"
+              )}
             </button>
           </div>
         </form>

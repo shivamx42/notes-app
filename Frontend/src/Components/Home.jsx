@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import Card from './Card'
 import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import AddNote from './AddNote';
-
+import { useSelector } from 'react-redux';
 
 export default function Home() {
 
+  const {currentUser}=useSelector(state=>state.user);
 
   const [isAddNoteOpen,setIsAddNoteOpen]=useState(false);
+
 
   const openAddNote=()=>{
     setIsAddNoteOpen(true);
@@ -21,7 +23,7 @@ export default function Home() {
   return (
     <>
       <div className={`min-h-screen ${isAddNoteOpen ? '' : ''}`}>
-        <Navbar title={"My Notes"}/>
+      <Navbar title={`${currentUser.name}'s Notes`}/>
 
           <div className='flex flex-col items-center'>
             <form className='bg-slate-100 p-3 my-4 rounded-lg flex items-center border-[1px] border-black dark:border-white dark:border-2 dark:bg-slate-400' >
