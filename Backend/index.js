@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from "dotenv"
 import authRoute from "./routes/auth.route.js"
+import notesRoute from "./routes/notes.route.js"
 
 
 dotenv.config();
@@ -20,3 +21,4 @@ app.listen(3000,()=>{
 
 
 app.use("/api/auth",authRoute)
+app.use("/api/notes",notesRoute)

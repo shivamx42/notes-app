@@ -5,13 +5,14 @@ import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import AddNote from './AddNote';
 import { useSelector } from 'react-redux';
+import ShowNotes from './ShowNotes';
 
 export default function Home() {
 
   const {currentUser}=useSelector(state=>state.user);
 
   const [isAddNoteOpen,setIsAddNoteOpen]=useState(false);
-
+  const [notesUpdated, setNotesUpdated] = useState(false);
 
   const openAddNote=()=>{
     setIsAddNoteOpen(true);
@@ -20,9 +21,13 @@ export default function Home() {
     setIsAddNoteOpen(false);  
   }
 
+  const handleAddNote = () => {
+    setNotesUpdated(true);
+  };
+
   return (
     <>
-      <div className={`min-h-screen ${isAddNoteOpen ? '' : ''}`}>
+      <div className={"min-h-screen"}>
       <Navbar title={`${currentUser.name}'s Notes`}/>
 
           <div className='flex flex-col items-center'>
@@ -49,9 +54,10 @@ export default function Home() {
           <AddNote
           isOpen={isAddNoteOpen}
           onClose={closeAddNote}
+          onAddNote={handleAddNote} 
         />
 
-          <Card title={"First"} content={"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed doloribus mollitia laboriosam ratione ipsam fuga nobis corrupti ut. Obcaecati ad fugit, provident saepe quidem commodi tempora aperiam labore consequuntur. Facere consequatur autem, suscipit commodi sunt maxime deleniti blanditiis quam, accusamus, facilis cumque tenetur doloribus inventore ea molestias voluptates optio tempora explicabo aliquid minima eum vitae? Minus magni tenetur, doloremque, at debitis porro dolorem aliquid ipsam nobis laudantium nisi? Dolor earum soluta, praesentium quas id libero repudiandae dolore in fugit rem voluptate expedita nobis. Deserunt ratione nemo deleniti et error, accusantium, perferendis optio, labore harum reiciendis esse! Praesentium tempora aut libero!"}/>
+        <ShowNotes notesUpdated={notesUpdated} setNotesUpdated={setNotesUpdated} />
           
       </div>
         
