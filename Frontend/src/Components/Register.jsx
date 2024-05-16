@@ -138,12 +138,8 @@ function RegisterPage() {
             </button>
           </div>
           <div>
-          <button
-              disabled={loading}
-              type="submit"
-              className="relative w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-slate-600/70 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700 flex items-center justify-center"
-            >
-              {loading ? (<Oval
+              {loading ? (<div className="flex items-center justify-center">
+                <Oval
                 visible={true}
                 height="40"
                 width="40"
@@ -152,11 +148,18 @@ function RegisterPage() {
                 secondaryColor="white"
                 strokeWidth="5"
                 
-                />)
+                />
+              </div>)
                 : (
+          <button
+              disabled={loading}
+              type="submit"
+              className="relative w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-slate-600/70 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700 flex items-center justify-center"
+            >
                 "Submit"
-              )}
+              
             </button>
+          )}
           </div>
         </form>
         <div className="mt-4 text-sm">

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
-import Card from './Card'
 import { IoMdAdd } from "react-icons/io";
-import { CiSearch } from "react-icons/ci";
+import { FaSearch } from "react-icons/fa";
 import AddNote from './AddNote';
 import { useSelector } from 'react-redux';
 import ShowNotes from './ShowNotes';
 import EditNote from './EditNote';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
 
@@ -21,6 +21,8 @@ export default function Home() {
   const [previousTitle,setPreviousTitle]=useState("");
   const [previousContent,setPreviousContent]=useState("");
   const [change,setChange]=useState(false);
+  const [searchTerm,setSearchTerm]=useState("");
+
 
   const openAddNote=()=>{
     setIsAddNoteOpen(true);
@@ -68,6 +70,12 @@ export default function Home() {
     fetchNote();
 }, [change]); 
 
+  const navigate = useNavigate();
+  const toSearch=(e)=>{
+    e.preventDefault();
+    navigate("/search",{ state: { userId: currentUser._id, previousSearchTerm: searchTerm,} });
+  }
+
   return (
     <>
       <div className={"min-h-screen"}>
@@ -80,10 +88,11 @@ export default function Home() {
                 type='text'
                 placeholder='Search...'
                 className='bg-transparent focus:outline-none w-24 sm:w-64 dark:placeholder-white'
-
+                onChange={(e)=>setSearchTerm(e.target.value)}
               />
-              <button>
-                <CiSearch size={25} className='duration-0 dark:text-white'/>
+                
+              <button onClick={toSearch}>
+                <FaSearch size={15} className='duration-0 dark:text-white'/>
               </button>
             </form>
             <div className='flex'>
@@ -117,7 +126,8 @@ export default function Home() {
           onEditNote={handleAddNote}
 
         />
-          
+
+
       </div>
         
     </>

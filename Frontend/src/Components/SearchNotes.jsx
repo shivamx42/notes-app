@@ -1,0 +1,117 @@
+import React, { useState,useEffect } from 'react'
+import Navbar from './Navbar'
+import { useSelector } from 'react-redux';
+import { useLocation,useNavigate } from 'react-router-dom';
+import ShowNotes from './ShowNotes';
+import EditNote from './EditNote';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { FaSearch } from "react-icons/fa";
+
+export default function SearchNotes() {
+
+    const location=useLocation();
+    const {previousSearchTerm}=location.state || {};
+
+    const {currentUser}=useSelector(state=>state.user);
+    const [searchTerm,setSearchTerm]=useState(previousSearchTerm || "");
+    
+    const [notesUpdated,setNotesUpdated]=useState(false);
+    const [noteId,setNoteId] = useState("");
+    const [change,setChange]=useState(false);
+    const [editNote,setEditNote] = useState(false);
+    const [previousTitle,setPreviousTitle]=useState("");
+    const [previousContent,setPreviousContent]=useState("");
+    const handleAddNote = () => {
+        setNotesUpdated(true);
+    };
+
+
+    function setId(id){
+        setNoteId(id);
+        setChange(prev=>!prev);
+    }
+    function openEditNote(){
+        setEditNote(true);
+    }
+    const closeEditNote=()=>{
+        setEditNote(false);
+    }
+
+    useEffect(() => {
+        const fetchNote = async () => {
+          if(noteId!=""){
+            try {
+                const res = await fetch(`api/notes/getOneNote/${noteId}`);
+                if(res==null) return;
+                const data = await res.json();
+                setPreviousTitle(data.title);
+                setPreviousContent(data.content);
+                openEditNote();
+    
+                
+            } catch (error) {
+              toast.error("Internal Server Error!")
+            }
+            
+          }
+        };
+    
+        fetchNote();
+    }, [change]); 
+
+    const navigate=useNavigate();
+    const handleClick=(e)=>{
+        e.preventDefault();
+        navigate("/");
+    }
+
+  return (
+    <>
+        <div className='min-h-screen '>
+            <Navbar title={`${currentUser.name}'s Notes`}/>
+                <div className='flex flex-col items-center'>
+                <div className='flex items-center gap-2'>
+                <button>
+                    <RiArrowGoBackFill size={25} className='duration-0 text-slate-800 dark:text-[#fdf6e4] dark:hover:text-white hover:text-black 'onClick={handleClick}/>
+                </button>
+                <form className='bg-slate-100 p-3 my-4 rounded-lg flex items-center border-[1px] border-black dark:border-white dark:border-2 dark:bg-slate-400' >
+                <input
+                    type='text'
+                    placeholder='Search...'
+                    className='bg-transparent focus:outline-none w-24 sm:w-64 dark:placeholder-white'
+                    onChange={(e)=>setSearchTerm(e.target.value)}
+                    value={searchTerm}
+                />
+                    
+                <button disabled={true}>
+                    <FaSearch size={15} className='duration-0 dark:text-white'/>
+                </button>
+                </form>
+                </div>
+                </div>
+                
+
+            <ShowNotes 
+            notesUpdated={notesUpdated}
+            setNotesUpdated={setNotesUpdated}
+            setId={setId}
+            searchTerm={searchTerm}/>
+
+            <EditNote 
+            isOpen={editNote}
+            onClose={closeEditNote}
+            noteToEditId={noteId}
+            previousTitle={previousTitle}
+            previousContent={previousContent}
+            onEditNote={handleAddNote}
+
+            />
+
+        </div>
+
+
+    </>
+  )
+}

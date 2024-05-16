@@ -14,7 +14,21 @@ export const addNote=async (req,res)=>{
 
 export const getNotes=async(req,res)=>{
     try {
-        const notes=await Notes.find({userRef: req.params.id});
+        const { id } = req.params;
+        const { searchTerm } = req.query;
+        let query = { userRef: id };
+        
+        if (searchTerm) {
+            query = {
+                ...query,
+                $or:[
+                        {title:{$regex: searchTerm, $options: "i"}},
+                        {content:{$regex: searchTerm, $options: "i"}}
+                    ]
+            };
+        }
+        
+        const notes = await Notes.find(query);
         res.status(200).json(notes);
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error!" });
@@ -57,3 +71,22 @@ export const deleteNote=async(req,res)=>{
         res.status(500).json({ message: "Internal Server Error!" });
     }
 }
+
+// export const searchNotes=async(req,res)=>{
+//     try {
+//         const searchTerm=req.query.searchTerm;
+
+//         const allNotes=await Notes.find({
+//             userRef: req.params.id,
+//             $or:[
+//                 {title:{$regex: searchTerm, $options: "i"}},
+//                 {content:{$regex: searchTerm, $options: "i"}}
+//             ]
+            
+//         });
+
+//         return res.status(200).json(allNotes);
+//     } catch (error) {
+//         res.status(500).json({ message: "Internal Server Error!" });
+//     }
+// }
