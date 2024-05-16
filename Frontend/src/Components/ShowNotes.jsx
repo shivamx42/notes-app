@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export default function ShowNotes({ notesUpdated, setNotesUpdated }) {
+export default function ShowNotes({ notesUpdated, setNotesUpdated, setId, openEditNote }) {
     const [allNotes, setAllNotes] = useState([]);
     const { currentUser } = useSelector(state => state.user);
 
@@ -26,8 +26,10 @@ export default function ShowNotes({ notesUpdated, setNotesUpdated }) {
     return (
         <>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-2">
-                {allNotes.map((note, index) => (
-                    <div key={index}> 
+                {allNotes.map((note) => (
+                    <div key={note._id} onClick={()=>{
+                        setId(note._id)
+                    }}> 
                         <Card title={note.title} content={note.content} />
                     </div>
                 ))}

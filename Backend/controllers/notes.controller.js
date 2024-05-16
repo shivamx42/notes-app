@@ -4,10 +4,10 @@ export const addNote=async (req,res)=>{
 
     try {
         const note= await Notes.create(req.body)
-        return res.status(201).json({message: "Note Added successfully",note});        
+        return res.status(201).json({message: "Note Added successfully!",note});   
 
     } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error!" });
     }
 }
 
@@ -17,6 +17,43 @@ export const getNotes=async(req,res)=>{
         const notes=await Notes.find({userRef: req.params.id});
         res.status(200).json(notes);
     } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error!" });
+    }
+}
+
+export const getOneNote=async(req,res)=>{
+    if(req.params.id==="") return null;
+    try {
+        const note=await Notes.findOne({_id: req.params.id});
+
+        return res.status(201).json({title: note.title, content: note.content})
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error!" });
+    }
+}
+
+export const editNote=async(req,res)=>{
+    try {
+        const note=await Notes.findOne({_id: req.params.id});
+    
+        const {title,content}=req.body;
+        note.title=title;
+        note.content=content;
+
+        await note.save();
+        return res.status(201).json({message: "Note Updated successfully!"})
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error!" });
+    }
+}
+
+export const deleteNote=async(req,res)=>{
+    try{
+        await Notes.findByIdAndDelete({_id: req.params.id});
+        res.status(200).json({message: "Note Deleted!"});
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error!" });
     }
 }

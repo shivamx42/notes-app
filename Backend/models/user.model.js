@@ -18,12 +18,6 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    notes_list : {
-      type : Array,
-      required : false,
-      default:[],
-    }
-
   },
   {
     timestamps: true,

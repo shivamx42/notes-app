@@ -6,6 +6,9 @@ import { CiSearch } from "react-icons/ci";
 import AddNote from './AddNote';
 import { useSelector } from 'react-redux';
 import ShowNotes from './ShowNotes';
+import EditNote from './EditNote';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
 
@@ -13,6 +16,11 @@ export default function Home() {
 
   const [isAddNoteOpen,setIsAddNoteOpen]=useState(false);
   const [notesUpdated, setNotesUpdated] = useState(false);
+  const [editNote,setEditNote] = useState(false);
+  const [noteId,setNoteId] = useState("");
+  const [previousTitle,setPreviousTitle]=useState("");
+  const [previousContent,setPreviousContent]=useState("");
+  const [change,setChange]=useState(false);
 
   const openAddNote=()=>{
     setIsAddNoteOpen(true);
@@ -24,6 +32,41 @@ export default function Home() {
   const handleAddNote = () => {
     setNotesUpdated(true);
   };
+  
+  function openEditNote(){
+    setEditNote(true);
+  }
+  const closeEditNote=()=>{
+    setEditNote(false);
+  }
+
+  function setId(id){
+    setNoteId(id);
+    setChange(prev=>!prev);
+  }
+
+
+  useEffect(() => {
+    const fetchNote = async () => {
+      if(noteId!=""){
+        try {
+            const res = await fetch(`api/notes/getOneNote/${noteId}`);
+            if(res==null) return;
+            const data = await res.json();
+            setPreviousTitle(data.title);
+            setPreviousContent(data.content);
+            openEditNote();
+
+            
+        } catch (error) {
+          toast.error("Internal Server Error!")
+        }
+        
+      }
+    };
+
+    fetchNote();
+}, [change]); 
 
   return (
     <>
@@ -52,12 +95,28 @@ export default function Home() {
           </div>
 
           <AddNote
-          isOpen={isAddNoteOpen}
-          onClose={closeAddNote}
-          onAddNote={handleAddNote} 
+            isOpen={isAddNoteOpen}
+            onClose={closeAddNote}
+            onAddNote={handleAddNote}
+
+          />
+
+        <ShowNotes 
+          notesUpdated={notesUpdated}
+          setNotesUpdated={setNotesUpdated}
+          setId={setId}
+          openEditNote={openEditNote}
         />
 
-        <ShowNotes notesUpdated={notesUpdated} setNotesUpdated={setNotesUpdated} />
+        <EditNote 
+          isOpen={editNote}
+          onClose={closeEditNote}
+          noteToEditId={noteId}
+          previousTitle={previousTitle}
+          previousContent={previousContent}
+          onEditNote={handleAddNote}
+
+        />
           
       </div>
         
