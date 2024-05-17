@@ -84,8 +84,8 @@ const AddNote = ({ isOpen, onClose, onAddNote  }) => {
             </label>
             <textarea
               id="content"
-              className="mt-1 p-2 block w-full rounded-md"
-              rows="8"
+              className="mt-1 p-2 block w-full rounded-md resize-none"
+              rows="14"
               onChange={handleChange}
               style={{
                 backdropFilter: "blur(10px)",

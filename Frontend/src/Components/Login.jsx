@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link,Navigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
 import { Oval } from 'react-loader-spinner'
 
@@ -14,13 +13,6 @@ function Login() {
   const [isLoggedIn,setIsLoggedIn]=useState(false);
   const [loading,setLoading]=useState(false);
   const dispatch=useDispatch();
-
-  const currentUser = useSelector(state => state.user.currentUser); 
-  useEffect(() => {
-    if (currentUser) {
-      setIsLoggedIn(true);
-    }
-  }, [currentUser]);
 
   const handleChange = (e) => {
     setFormData({
@@ -67,8 +59,7 @@ function Login() {
           }
         `}
       </style>
-      <Navbar title={"Notes App"} />
-      <div className="min-h-screen items-center flex flex-col mx-2 mt-24 ">
+      <div className="min-h-screen items-center flex flex-col mx-2 mt-20 ">
         <div className="bg-slate-300 border-2 border-black dark:border-white dark:bg-slate-400 p-8 rounded-xl shadow-md backdrop-blur mx-3 space-y-8 max-w-md w-full pb-14">
           <h2 className="text-2xl mb-4 font-semibold text-[#28231d] text-center dark:text-black">
             Login
@@ -134,7 +125,7 @@ function Login() {
               className="relative w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-slate-600/70 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700 flex items-center justify-center"
             >
                  
-                "Submit"
+                Submit
               
             </button>
           )}
@@ -144,7 +135,7 @@ function Login() {
             <div className="flex">
               Don't have an account yet?
               <div
-                className="font-bold text-black/50 hover:text-black/80 dark:text-black/70 dark:hover:text-black/100 ml-2 cursor-pointer"
+                className="font-bold text-black/50 hover:text-black/80 dark:text-black/70 dark:hover:text-black/100 ml-2 cursor-pointer duration-0"
               >
                 <Link to="/register">Register here</Link>
               </div>

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SwitchTheme from './Toggle/SwitchTheme';
+
 export default function Navbar({title}) {
 
   return (

@@ -25,7 +25,6 @@ export const register = async (req, res) => {
         
 
     } catch (error) {
-        console.error('Error in registration:', error);
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
 }
@@ -45,9 +44,29 @@ export const login=async (req,res)=>{
         }
 
         const token=jwt.sign({id: userExist._id,name: userExist.name},process.env.JWT_SECRET);
-        res.cookie("access_token",token,{httpOnly: true}).status(200).json({message: "Login Successfull!","userData": userExist});
+        res.cookie("access_token",token,{httpOnly: true}).status(200).json({message: "Login Successful!","userData": userExist});
 
     } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
+
+export const setTheme=async(req,res)=>{
+    try {
+        const {theme}=req.body;
+        const userId=req.params.id;
+        const userExist=await User.findOne({_id: userId});
         
+        if(!userExist) return;
+
+        userExist.theme=theme;
+        await userExist.save();
+
+        return res.status(200);
+
+        
+
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 }

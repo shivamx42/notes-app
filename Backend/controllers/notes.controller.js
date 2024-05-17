@@ -71,22 +71,3 @@ export const deleteNote=async(req,res)=>{
         res.status(500).json({ message: "Internal Server Error!" });
     }
 }
-
-// export const searchNotes=async(req,res)=>{
-//     try {
-//         const searchTerm=req.query.searchTerm;
-
-//         const allNotes=await Notes.find({
-//             userRef: req.params.id,
-//             $or:[
-//                 {title:{$regex: searchTerm, $options: "i"}},
-//                 {content:{$regex: searchTerm, $options: "i"}}
-//             ]
-            
-//         });
-
-//         return res.status(200).json(allNotes);
-//     } catch (error) {
-//         res.status(500).json({ message: "Internal Server Error!" });
-//     }
-// }

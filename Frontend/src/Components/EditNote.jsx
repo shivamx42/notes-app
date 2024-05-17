@@ -95,8 +95,8 @@ export default function EditNote({isOpen, onClose, noteToEditId, previousTitle, 
             </label>
             <textarea
               id="content"
-              className="mt-1 p-2 block w-full rounded-md"
-              rows="8"
+              className="mt-1 p-2 block w-full rounded-md resize-none"
+              rows="14"
               value={formData.content}
               onChange={handleChange}
               style={{

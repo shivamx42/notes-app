@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from 'react'
-import Navbar from './Navbar'
 import { useSelector } from 'react-redux';
 import { useLocation,useNavigate } from 'react-router-dom';
 import ShowNotes from './ShowNotes';
@@ -70,7 +69,6 @@ export default function SearchNotes() {
   return (
     <>
         <div className='min-h-screen '>
-            <Navbar title={`${currentUser.name}'s Notes`}/>
                 <div className='flex flex-col items-center'>
                 <div className='flex items-center gap-2'>
                 <button>
@@ -90,15 +88,18 @@ export default function SearchNotes() {
                 </button>
                 </form>
                 </div>
-                </div>
                 
+            <div className='mt-7'>
 
             <ShowNotes 
             notesUpdated={notesUpdated}
             setNotesUpdated={setNotesUpdated}
             setId={setId}
             searchTerm={searchTerm}/>
+            </div>
 
+
+        </div>
             <EditNote 
             isOpen={editNote}
             onClose={closeEditNote}
@@ -108,7 +109,6 @@ export default function SearchNotes() {
             onEditNote={handleAddNote}
 
             />
-
         </div>
 
 

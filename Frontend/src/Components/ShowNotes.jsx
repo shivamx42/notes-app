@@ -8,16 +8,15 @@ import { Oval } from 'react-loader-spinner'
 
 export default function ShowNotes({ notesUpdated, setNotesUpdated, setId,searchTerm }) {
     const [allNotes, setAllNotes] = useState([]);
-    const [loading,setLoading]=useState(false);
+    const [loading,setLoading]=useState(true);
     const { currentUser } = useSelector(state => state.user);
 
     useEffect(() => {
         const fetchNotes = async () => {
             try {
               
-                var url=`api/notes/get/${currentUser._id}`;
+                var url=`/api/notes/get/${currentUser._id}`;
                 if(searchTerm) url += `?searchTerm=${searchTerm}`;
-                setLoading(true);
                 const res = await fetch(url);
                 const data = await res.json(); 
                 setLoading(false);
@@ -31,9 +30,8 @@ export default function ShowNotes({ notesUpdated, setNotesUpdated, setId,searchT
         fetchNotes();
     }, [currentUser._id, notesUpdated, setNotesUpdated,searchTerm]);
 
-    return (
-        <>        
-        {loading? <div className="flex justify-center items-center mt-40"><Oval
+    if(loading){
+        return( <div className="flex justify-center items-center mt-40"><Oval
                 visible={true}
                 height="70"
                 width="70"
@@ -41,17 +39,23 @@ export default function ShowNotes({ notesUpdated, setNotesUpdated, setId,searchT
                 ariaLabel="oval-loading"
                 secondaryColor="white"
                 strokeWidth="5"
-                /></div>  : 
+                /></div>  
+        )
+    }
+
+    return (
+        <>        
+        {
             (allNotes.length === 0 ? searchTerm ? 
             (<div className="flex justify-center items-center mt-40">
-                    <h1 className='text-3xl'>No Notes Found!</h1>
+                    <h1 className='text-3xl '>No Notes Found!</h1>
             </div>) : (
             
-                <div className="flex justify-center items-center mt-40">
-                    <h1 className='text-3xl'>Add Notes to Display Here!</h1>
+                <div className="flex justify-center items-center mt-32">
+                    <h1 className='text-3xl dark:text-[#fdf6e4]'>Add Notes to Display Here!</h1>
                 </div>
                 ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-2">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 
                     {allNotes.map((note) => (
                         <div key={note._id} onClick={()=>{
