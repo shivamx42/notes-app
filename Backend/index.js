@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from "dotenv"
 import authRoute from "./routes/auth.route.js"
 import notesRoute from "./routes/notes.route.js"
+import path from "path"
 
 
 dotenv.config();
@@ -15,10 +16,16 @@ mongoose.connect(process.env.MONGO).then(()=>{
 const app=express();
 app.use(express.json());
 
+app.use("/api/auth",authRoute)
+app.use("/api/notes",notesRoute)
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+})
+
 app.listen(3000,()=>{
     console.log("Server is running on port 3000!");
 })
 
-
-app.use("/api/auth",authRoute)
-app.use("/api/notes",notesRoute)
