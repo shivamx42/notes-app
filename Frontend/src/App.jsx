@@ -6,6 +6,8 @@ import PrivateRoute from "./Components/PrivateRoute"
 import SearchNotes from "./Components/SearchNotes"
 import Navbar from "./Components/Navbar"
 import { useSelector } from "react-redux"
+import ForgotPassword from "./Components/ForgotPassword"
+import ResetPassword from "./Components/ResetPassword"
 function App() {
 
   const router=createBrowserRouter([
@@ -30,7 +32,15 @@ function App() {
       children:[
         {path: "/search",element: <SearchNotes/>}
       ]
-    }
+    },
+    {
+      path:"/forgot-password",
+      element:<ForgotPassword/>
+    },
+    {
+      path:"/reset-password/:id/:token",
+      element:<ResetPassword/>
+    },
   ])
 
   const {currentUser}=useSelector(state=>state.user);
@@ -41,7 +51,6 @@ function App() {
         <div className="bg-slate-200 dark:bg-slate-800">
         <Navbar title={currentUser?`${currentUser.name}'s Notes`:"Notes App"}/>
         <RouterProvider router={router}/>
-      
       </div>
     </>
     

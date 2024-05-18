@@ -1,6 +1,7 @@
 import User from "../models/user.model.js"
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 export const register = async (req, res) => {
     try {
@@ -62,11 +63,75 @@ export const setTheme=async(req,res)=>{
         userExist.theme=theme;
         await userExist.save();
 
-        return res.status(200);
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
 
+export const forgotPassword=async(req,res)=>{
+    try {
+        const {email}=req.body;
+        const userExist=await User.findOne({email});
+        if(!userExist){
+            return res.status(400).json({ message: "User Not Found!" });
+        }
+
+        const token=jwt.sign({id: userExist._id},process.env.JWT_SECRET);
+
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.APP_PASSWORD
+            }
+          });
+          
+          var mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Reset you password',
+            text: `http://localhost:5173/reset-password/${userExist._id}/${token}`
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
         
+            return res.status(200).json({name:userExist.name,message: "Success"});
 
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }
+}
+
+export const resetPasswort=async(req,res)=>{
+    const {id,token}=req.params;
+    const {password}=req.body;
+
+    try {
+
+        if(password.length<6){
+            return res.status(400).json({ message: 'Password must be atleast 6 characters long!' });
+        }
+
+        jwt.verify(token,process.env.JWT_SECRET,(err,decode)=>{
+            
+                bcryptjs.hash(password, 10).
+                then(hash=>{
+                    User.findByIdAndUpdate({_id:id},{password: hash}).
+                    then(send=>res.status(200).json({message: "Password Updated Successfully!"}))
+                })
+    
+            
+        })
+        
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error!' });
+    }
+
 }
