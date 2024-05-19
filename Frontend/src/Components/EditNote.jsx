@@ -58,9 +58,9 @@ export default function EditNote({isOpen, onClose, noteToEditId, previousTitle, 
 
 
   return (
-    <div className="fixed z-10 inset-0 overflow-y-auto">
+    <div className="fixed z-50 inset-0 overflow-y-auto bg-slate-200 dark:bg-[#222222] ">
       <div className="flex items-center justify-center min-h-screen">
-        <div className="bg-white/20 w-[80vw] p-8 rounded-md shadow-xl md:w-[600px] mt-4 backdrop-blur-md">
+        <div className="bg-slate-300 dark:bg-white/20 w-[80vw] p-8 rounded-md shadow-xl md:w-[600px] mt-4 ">
           <div className="mb-4">
             <label
               htmlFor="title"
@@ -71,12 +71,11 @@ export default function EditNote({isOpen, onClose, noteToEditId, previousTitle, 
             <input
               id="title"
               type="text"
-              className="mt-1 p-2 block w-full rounded-md"
+              className="mt-1 p-2 block w-full rounded-md dark:bg-slate-300"
               value={formData.title}
               onChange={handleChange}
               style={{
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
+               
                 outline: "none",
                 border: "none",
                 ":focus": {
@@ -95,13 +94,11 @@ export default function EditNote({isOpen, onClose, noteToEditId, previousTitle, 
             </label>
             <textarea
               id="content"
-              className="mt-1 p-2 block w-full rounded-md resize-none"
+              className="mt-1 p-2 block w-full rounded-md resize-none dark:bg-slate-300"
               rows="14"
               value={formData.content}
               onChange={handleChange}
               style={{
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
                 outline: "none",
                 border: "none",
                 ":focus": {

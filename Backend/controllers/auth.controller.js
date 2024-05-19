@@ -76,7 +76,7 @@ export const forgotPassword=async(req,res)=>{
             return res.status(400).json({ message: "User Not Found!" });
         }
 
-        const token=jwt.sign({id: userExist._id},process.env.JWT_SECRET);
+        const token=jwt.sign({id: userExist._id},process.env.JWT_SECRET,{expiresIn: "1h"});
 
 
         var transporter = nodemailer.createTransport({
@@ -90,8 +90,14 @@ export const forgotPassword=async(req,res)=>{
           var mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: 'Reset you password',
-            text: `http://localhost:5173/reset-password/${userExist._id}/${token}`
+            subject: 'Reset your password',
+            text: `Hello ${userExist.name},
+
+            Please click the link below to reset your password:
+            https://notes-app-zgkw.onrender.com/reset-password/${userExist._id}/${token}
+
+            Thank you`
+
           };
           
           transporter.sendMail(mailOptions, function(error, info){
@@ -121,11 +127,15 @@ export const resetPasswort=async(req,res)=>{
 
         jwt.verify(token,process.env.JWT_SECRET,(err,decode)=>{
             
-                bcryptjs.hash(password, 10).
-                then(hash=>{
-                    User.findByIdAndUpdate({_id:id},{password: hash}).
-                    then(send=>res.status(200).json({message: "Password Updated Successfully!"}))
-                })
+            if(err){
+                return res.status(400).json({message: "Invalid Token"});
+            }
+            
+            bcryptjs.hash(password, 10).
+            then(hash=>{
+                User.findByIdAndUpdate({_id:id},{password: hash}).
+                then(send=>res.status(200).json({message: "Password Updated Successfully!"}))
+            })
     
             
         })
@@ -135,3 +145,30 @@ export const resetPasswort=async(req,res)=>{
     }
 
 }
+// export const resetPasswort=async(req,res)=>{
+//     const {id,token}=req.params;
+//     const {password}=req.body;
+
+//     try {
+
+//         if(password.length<6){
+//             return res.status(400).json({ message: 'Password must be atleast 6 characters long!' });
+//         }
+
+//         const decode=jwt.verify(token,process.env.JWT_SECRET);
+
+//         const user=await User.findOne({_id:id});
+
+//         const hashedPassword = bcryptjs.hashSync(password, 10);
+
+//         user.password=hashedPassword;
+
+//         await user.save();
+
+//         return res.status(200).json({name:user.name});
+        
+//     } catch (error) {
+//         return res.status(500).json({ message: 'Internal Server Error!' });
+//     }
+
+// }

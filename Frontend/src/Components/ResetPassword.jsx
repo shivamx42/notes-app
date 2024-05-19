@@ -10,7 +10,7 @@ export default function ResetPassword() {
     const [password, setPassword] = useState("");
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [time, setTime] = useState(200);
+    const [time, setTime] = useState(3);
 
     const { id, token } = useParams();
     const navigate = useNavigate();
@@ -79,7 +79,7 @@ export default function ResetPassword() {
                 </div>
             ) : (
                 <div className="min-h-screen items-center flex flex-col mx-2 mt-24">
-                    <div className="bg-slate-300 border-2 border-black dark:border-white dark:bg-slate-400 p-8 rounded-xl shadow-md backdrop-blur mx-3 space-y-8 max-w-md w-full py-14">
+                    <div className="bg-slate-300 border-2 border-[#28231d] dark:border-[#f3ead3] dark:bg-slate-400 p-8 rounded-xl shadow-md backdrop-blur mx-3 space-y-8 max-w-md w-full py-14">
                         <h2 className="text-2xl font-semibold text-[#28231d] text-center dark:text-black">
                             Reset Password
                         </h2>

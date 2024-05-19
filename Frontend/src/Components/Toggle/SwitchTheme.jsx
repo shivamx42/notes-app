@@ -28,6 +28,7 @@ export default function SwitchTheme() {
 
   const changeInDb = async (newTheme) => {
     try {
+      if(!currentUser) return;
       const id = currentUser._id;
       const res = await fetch(`/api/auth/setTheme/${id}`, {
         method: 'POST',

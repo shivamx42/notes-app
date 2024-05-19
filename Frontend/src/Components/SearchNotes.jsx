@@ -5,7 +5,7 @@ import ShowNotes from './ShowNotes';
 import EditNote from './EditNote';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { RiArrowGoBackFill } from "react-icons/ri";
+import { TbLogout2 } from "react-icons/tb";
 import { FaSearch } from "react-icons/fa";
 
 export default function SearchNotes() {
@@ -72,19 +72,19 @@ export default function SearchNotes() {
                 <div className='flex flex-col items-center'>
                 <div className='flex items-center gap-2'>
                 <button>
-                    <RiArrowGoBackFill size={25} className='duration-0 text-slate-800 dark:text-[#fdf6e4] dark:hover:text-white hover:text-black 'onClick={handleClick}/>
+                    <TbLogout2  size={25} className='duration-0 text-[#28231d]  dark:text-[#fdf6e4] dark:hover:text-white 'onClick={handleClick}/>
                 </button>
-                <form className='bg-slate-100 p-3 my-4 rounded-lg flex items-center border-[1px] border-black dark:border-white dark:border-2 dark:bg-slate-400' >
+                <form className='bg-slate-100 p-3 my-4 rounded-lg flex items-center border-[2px] border-[#28231d] dark:border-[#f3ead3] dark:border-2 dark:bg-slate-400' >
                 <input
                     type='text'
                     placeholder='Search...'
-                    className='bg-transparent focus:outline-none w-24 sm:w-64 dark:placeholder-white'
+                    className='bg-transparent focus:outline-none w-24 sm:w-64 dark:placeholder-black'
                     onChange={(e)=>setSearchTerm(e.target.value)}
                     value={searchTerm}
                 />
                     
                 <button disabled={true}>
-                    <FaSearch size={15} className='duration-0 dark:text-white'/>
+                    <FaSearch size={15} className='duration-0 text-[#28231d] dark:text-black'/>
                 </button>
                 </form>
                 </div>

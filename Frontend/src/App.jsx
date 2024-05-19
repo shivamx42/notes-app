@@ -48,7 +48,7 @@ function App() {
 
   return (
     <>
-        <div className="bg-slate-200 dark:bg-slate-800">
+        <div className="bg-slate-200 dark:bg-[#222222]">
         <Navbar title={currentUser?`${currentUser.name}'s Notes`:"Notes App"}/>
         <RouterProvider router={router}/>
       </div>

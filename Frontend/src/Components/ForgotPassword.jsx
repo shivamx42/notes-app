@@ -41,11 +41,11 @@ export default function ForgotPassword() {
               }
             `}
           </style>
-          {success?<div className='min-h-screen flex items-center justify-center -translate-y-16 dark:text-white text-2xl'>{name}, Check Your Email To Reset The Password
+          {success?<div className='min-h-screen flex items-center justify-center -translate-y-16 dark:text-white text-lg font-bold'>{name}, Check Your Email To Reset The Password
           </div>:(
 
           <div className="min-h-screen items-center flex flex-col mx-2 mt-24 ">
-            <div className="bg-slate-300 border-2 border-black dark:border-white dark:bg-slate-400 p-8 rounded-xl shadow-md backdrop-blur mx-3 space-y-8 max-w-md w-full py-14">
+            <div className="bg-slate-300 border-2 border-[#28231d] dark:border-[#f3ead3]  dark:bg-slate-400 p-8 rounded-xl shadow-md backdrop-blur mx-3 space-y-8 max-w-md w-full py-14">
               <h2 className="text-2xl font-semibold text-[#28231d] text-center dark:text-black">
                 To Reset Password
               </h2>

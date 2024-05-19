@@ -5,7 +5,7 @@ export default function Navbar({title}) {
 
   return (
     <>
-            <div className='bg-white dark:bg-slate-900 flex justify-center p-4 border-b-2 border-black dark:border-white dark:border-b font-bold h-[100px]'>
+            <div className='bg-white dark:bg-[#101110] flex justify-center p-4 border-b-[1.5px] border-black dark:border-[#f3ead3] font-bold h-[100px]'>
                 <div className='text-black text-center text-xl items-center flex-grow dark:text-white mt-4'>{title}</div>
                 <div className='ml-auto'>
                     <SwitchTheme/>

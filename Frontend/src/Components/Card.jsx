@@ -2,13 +2,10 @@ import React from "react";
 
 function Card({ title, content }) {
   return (
-    <div className="h-[350px] w-[260px] p-4 rounded-xl border-[2px] border-black shadow-lg flex flex-col justify-between m-2 bg-red-300 dark:border-white overflow-hidden dark:bg-red-400 mx-7 mb-8 ">
-      <div >
-        <h1 className="text-xl font-bold mb-2 dark:text-[#28231d] border-b border-black dark:border-white ">{title}</h1>
-        <p className="text-[#040406] dark:text-[#160d08] mt-3">{content}</p>
-      </div>
-      <div className="mt-4">
-        
+    <div className="h-[350px] w-[260px] p-4 rounded-xl border border-gray-300 dark:border-gray-700 shadow-md flex flex-col justify-between m-3 bg-slate-100 dark:bg-slate-800 overflow-hidden transition-all duration-300 ease-in-out transform hover:shadow-2xl hover:scale-105 cursor-pointer">
+      <div>
+        <h1 className="text-xl font-bold mb-2 text-gray-800 dark:text-gray-200 border-b border-gray-300 dark:border-gray-700 pb-2">{title}</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-3">{content}</p>
       </div>
     </div>
 

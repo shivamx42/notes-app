@@ -97,23 +97,23 @@ export default function Home() {
 
       <button
       onClick={handleLogout}
-      className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-400 dark:hover:bg-slate-500 text-black font py-2 px-4 rounded-md focus:shadow-outline ml-2 mt-2 border border-black dark:border-white z-50 relative"
+      className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-400 dark:hover:bg-slate-500 text-black font py-2 px-4 rounded-md focus:shadow-outline ml-2 mt-2 border border-black dark:border-white z-40 relative"
       >
         <TbLogout2 />
       </button>
 
           <div className='flex flex-col items-center -translate-y-7'>
-            <form className='bg-slate-100 p-3 my-4 rounded-lg flex items-center border-[1px] border-black dark:border-white dark:border-2 dark:bg-slate-400' >
+            <form className='bg-slate-100 p-3 my-4 rounded-lg flex items-center border-[2px] border-[#28231d] dark:border-[#f3ead3] dark:bg-slate-400' >
                 
               <input
                 type='text'
                 placeholder='Search...'
-                className='bg-transparent focus:outline-none w-24 sm:w-64 dark:placeholder-white'
+                className='bg-transparent focus:outline-none w-24 sm:w-64 dark:placeholder-black'
                 onChange={(e)=>setSearchTerm(e.target.value)}
               />
                 
               <button onClick={toSearch}>
-                <FaSearch size={15} className='duration-0 dark:text-white'/>
+                <FaSearch size={15} className='duration-0 text-[#28231d] dark:text-black'/>
               </button>
             </form>
             <div className='flex'>

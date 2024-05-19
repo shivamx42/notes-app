@@ -3,7 +3,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link,Navigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
 import { Oval } from 'react-loader-spinner'
 
@@ -48,6 +48,17 @@ function RegisterPage() {
     
   };
 
+  const { currentUser } = useSelector(state => state.user);
+
+  useEffect(() => {
+    if (currentUser) {
+      
+      setIsRegistered(true);
+    }else {
+      setIsRegistered(false);
+    }
+  }, [currentUser]);
+
   if(isRegistered){
     return <Navigate to="/" replace={true}/>
   }
@@ -63,7 +74,7 @@ function RegisterPage() {
       </style>
     <div className="min-h-screen items-center flex flex-col mx-2 mt-20">
     
-      <div className="bg-slate-300 border-2 border-black dark:border-white dark:bg-slate-400 p-8 rounded-xl backdrop-blur mx-3 space-y-8 max-w-md w-full pb-14">
+      <div className="bg-slate-300 border-2 border-[#28231d] dark:border-[#f3ead3] dark:bg-slate-400 p-8 rounded-xl mx-3 space-y-8 max-w-md w-full pb-14">
         <h2 className="text-2xl mb-4 font-semibold text-[#28231d] text-center dark:text-black">
           Register
         </h2>

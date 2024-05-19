@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link,Navigate } from "react-router-dom";
 import { toast } from 'react-toastify';
@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
 import { Oval } from 'react-loader-spinner'
+import { useSelector } from "react-redux";
 
 function Login() {
   const [formData,setFormData]=useState({});
@@ -46,6 +47,17 @@ function Login() {
     
   };
 
+  const { currentUser } = useSelector(state => state.user);
+
+  useEffect(() => {
+    if (currentUser) {
+      
+      setIsLoggedIn(true);
+    }else {
+      setIsLoggedIn(false);
+    }
+  }, [currentUser]);
+
   if(isLoggedIn){
     return <Navigate to="/" replace={true}/>
   }
@@ -60,7 +72,7 @@ function Login() {
         `}
       </style>
       <div className="min-h-screen items-center flex flex-col mx-2 mt-20 ">
-        <div className="bg-slate-300 border-2 border-black dark:border-white dark:bg-slate-400 p-8 rounded-xl shadow-md backdrop-blur mx-3 space-y-8 max-w-md w-full pb-10">
+        <div className="bg-slate-300 border-2 border-[#28231d] dark:border-[#f3ead3] dark:bg-slate-400 p-8 rounded-xl shadow-md mx-3 space-y-8 max-w-md w-full pb-10">
           <h2 className="text-2xl font-semibold text-[#28231d] text-center dark:text-black">
             Login
           </h2>
@@ -142,7 +154,7 @@ function Login() {
             </div>
           </div>
           <div
-                className="font-bold text-black/50 hover:text-black/80 dark:text-black/70 dark:hover:text-black/100 ml-2 cursor-pointer duration-0 text-sm" 
+                className="font-bold text-black/80 hover:text-black/90 dark:text-black/80 dark:hover:text-black/100 ml-2 cursor-pointer duration-0 text-sm" 
               >
                 <Link to="/forgot-password">Forgot Password?</Link>
               </div>

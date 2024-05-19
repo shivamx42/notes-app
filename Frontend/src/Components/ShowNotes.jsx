@@ -48,7 +48,7 @@ export default function ShowNotes({ notesUpdated, setNotesUpdated, setId,searchT
         {
             (allNotes.length === 0 ? searchTerm ? 
             (<div className="flex justify-center items-center mt-40">
-                    <h1 className='text-3xl '>No Notes Found!</h1>
+                    <h1 className='text-3xl dark:text-[#fdf6e4]'>No Notes Found!</h1>
             </div>) : (
             
                 <div className="flex justify-center items-center mt-32">
