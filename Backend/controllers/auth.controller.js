@@ -63,6 +63,8 @@ export const setTheme=async(req,res)=>{
         userExist.theme=theme;
         await userExist.save();
 
+        return res.status(200).json({theme:theme, message: "Updated"});
+
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error!' });
     }

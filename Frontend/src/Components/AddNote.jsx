@@ -48,7 +48,7 @@ const AddNote = ({ isOpen, onClose, onAddNote  }) => {
   }
 
   return (
-    <div className="fixed z-50 inset-0 overflow-y-auto bg-slate-200 dark:bg-[#222222]">
+    <div className="fixed z-50 inset-0 overflow-y-auto backdrop-blur-md dark:backdrop-blur-lg">
       <div className="flex items-center justify-center min-h-screen">
         <div className="bg-slate-300 dark:bg-white/20 w-[80vw] p-8 rounded-md shadow-xl md:w-[600px] mt-4 ">
           <div className="mb-4">
