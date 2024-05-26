@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteNote from './DeleteNote';
+import useCheckUserVerification from "./UserVerification/useCheckUserVerification";
+
 
 export default function EditNote({isOpen, onClose, noteToEditId, previousTitle, previousContent, onEditNote}) {
 
@@ -13,6 +15,7 @@ export default function EditNote({isOpen, onClose, noteToEditId, previousTitle, 
       })
 
     const [deletePromt,setDeletePromt]=useState(false);
+    const checkUserVerification=useCheckUserVerification();
 
     const deleteDialogOpen=()=>{
         setDeletePromt(true);
@@ -45,6 +48,8 @@ export default function EditNote({isOpen, onClose, noteToEditId, previousTitle, 
             },
             body: JSON.stringify(formData)
           })
+          if(checkUserVerification(res)) return;
+
           const data = await res.json(); 
           toast.success("Note Updated Successfully!", {});
           onClose();

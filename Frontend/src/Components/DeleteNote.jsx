@@ -1,8 +1,12 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useCheckUserVerification from "./UserVerification/useCheckUserVerification";
+
 
 export default function DeleteNote({ onCancel, noteToDelete, onDeleteNote, onClose }) {
+
+    const checkUserVerification=useCheckUserVerification();
 
     const handleDelete=async()=> {
         try {
@@ -10,6 +14,7 @@ export default function DeleteNote({ onCancel, noteToDelete, onDeleteNote, onClo
             const res=await fetch(`/api/notes/edit/${noteToDelete}`,{
                 method: "DELETE",
             });
+            if(checkUserVerification(res)) return;
 
             toast.info("Note Deleted!",{});
             onCancel();

@@ -4,11 +4,13 @@ import { IconMoon, IconSun } from './Icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateCurrentUser } from '../../redux/user/userSlice';
 
+
 export default function SwitchTheme() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector(state => state.user);
   const [theme, setTheme] = useState(currentUser?.theme || "light");
   const ref = useRef(null);
+
 
   useEffect(() => {
     if (currentUser) {
@@ -34,9 +36,9 @@ export default function SwitchTheme() {
       return;
     }
 
-    document.startViewTransition(async () => {
+    document.startViewTransition( () => {
       setTheme(newTheme);
-      await changeInDb(newTheme);
+       changeInDb(newTheme);
     }).ready.then(() => {
       const { top, left, width, height } = ref.current.getBoundingClientRect();
       const x = left + width / 2;
@@ -72,6 +74,8 @@ export default function SwitchTheme() {
         },
         body: JSON.stringify({ theme: newTheme }),
       });
+
+
       const data = await res.json();
       if (res.status == 200) {
         dispatch(updateCurrentUser({ ...currentUser, theme: data.theme }));

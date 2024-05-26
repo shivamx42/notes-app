@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 export default function ForgotPassword() {
     const [loading,setLoading]=useState(false);
     const [email,setEmail]=useState("");
     const [success,setSuccess]=useState(false);
     const [name,setName]=useState("");
+    const { currentUser } = useSelector(state => state.user);
+    
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
@@ -30,6 +34,10 @@ export default function ForgotPassword() {
             setSuccess(true);
             setName(data.name);
         }
+    }
+
+    if(currentUser){
+      return <Navigate to="/" replace={true}/>
     }
 
     return (

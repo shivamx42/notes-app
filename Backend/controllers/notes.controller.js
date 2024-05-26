@@ -1,7 +1,7 @@
 import Notes from "../models/notes.model.js";
 
 export const addNote=async (req,res)=>{
-
+    
     try {
         const note= await Notes.create(req.body)
         return res.status(201).json({message: "Note Added successfully!",note});   

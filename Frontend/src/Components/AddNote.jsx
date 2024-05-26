@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useCheckUserVerification from "./UserVerification/useCheckUserVerification";
+
 
 const AddNote = ({ isOpen, onClose, onAddNote  }) => {
   if (!isOpen) return null;          
 
   const {currentUser} = useSelector(state => state.user);
+  const checkUserVerification=useCheckUserVerification();
   
   const [formData,setFormData]=useState({
     title: "",
@@ -20,7 +24,7 @@ const AddNote = ({ isOpen, onClose, onAddNote  }) => {
       [e.target.id]: e.target.value,
     });
   };
-
+  const navigate=useNavigate();
   const handleSubmit=async (e)=>{
     e.preventDefault();
 
@@ -37,6 +41,9 @@ const AddNote = ({ isOpen, onClose, onAddNote  }) => {
         },
         body: JSON.stringify(formData)
       })
+      if(checkUserVerification(res)) return;
+
+
       const data = await res.json(); 
       toast.success("Note Added Successfully!", {});
       onClose();
