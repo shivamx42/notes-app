@@ -12,6 +12,11 @@ export const addNote=async (req,res)=>{
 }
 
 
+const convert = (string) => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+
 export const getNotes=async(req,res)=>{
     try {
         const { id } = req.params;
@@ -19,11 +24,12 @@ export const getNotes=async(req,res)=>{
         let query = { userRef: id };
         
         if (searchTerm) {
+            const newSearchTerm = convert(searchTerm);
             query = {
                 ...query,
                 $or:[
-                        {title:{$regex: searchTerm, $options: "i"}},
-                        {content:{$regex: searchTerm, $options: "i"}}
+                        {title:{$regex: newSearchTerm, $options: "i"}},
+                        {content:{$regex: newSearchTerm, $options: "i"}}
                     ]
             };
         }

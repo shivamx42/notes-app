@@ -57,7 +57,7 @@ export default function ShowNotes({ notesUpdated, setNotesUpdated, setId,searchT
                 ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 
-                    {allNotes.map((note) => (
+                    { allNotes.map((note) => (
                         <div key={note._id} onClick={()=>{
                             setId(note._id)
                         }}> 
